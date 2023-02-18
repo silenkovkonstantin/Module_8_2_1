@@ -11,13 +11,23 @@ namespace Module_8_2_1
 
         static void GetDiskObjectsCount()
         {
-            DriveInfo[] drives = DriveInfo.GetDrives(); // Получаем массив дисков
-
-            foreach (var item in drives)
+            try
             {
-                DirectoryInfo[] dirs = item.RootDirectory.GetDirectories(); // Получаем массив каталогов на диске
-                FileInfo[] files = item.RootDirectory.GetFiles(); // Получаем массив файлов на диске
-                Console.WriteLine($"Общее количество каталогов и файлов на диске {item}: {dirs.Length + files.Length}");
+                DirectoryInfo dirInfo = new DirectoryInfo(@"/" /* Или С:\\ для Windows */ );
+                if (dirInfo.Exists)
+                {
+                    Console.WriteLine(dirInfo.GetDirectories().Length + dirInfo.GetFiles().Length);
+                }
+
+                DirectoryInfo newDirectory = new DirectoryInfo(@"/newDirectory");
+                if (!newDirectory.Exists)
+                    newDirectory.Create();
+
+                Console.WriteLine(dirInfo.GetDirectories().Length + dirInfo.GetFiles().Length);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
     }
